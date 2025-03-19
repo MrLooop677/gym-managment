@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/members";
+const API_URL = "https://plume-numerous-homburg.glitch.me/members";
 
 export interface Member {
   id?: number;
