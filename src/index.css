@@ -776,3 +776,31 @@ span.flatpickr-weekday,
 .simplebar-scrollbar.simplebar-visible:before {
   @apply opacity-100;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply antialiased text-gray-800 overflow-x-hidden;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Prevent scrolling when mobile menu is open */
+body.sidebar-open {
+  @apply overflow-hidden;
+}

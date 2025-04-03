@@ -1,7 +1,12 @@
+import React from 'react';
 import { Link, useLocation } from "react-router-dom";
 import navigationConfig from "../config/navigationConfig";
 
-export default function Sidebar() {
+interface SidebarProps {
+  className?: string; // Allow className as an optional prop
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ className }) => {
   const location = useLocation();
 
   const isActiveLink = (path: string) => {
@@ -9,7 +14,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800">
+    <aside className={`w-64 border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800 ${className}`}>
       {/* Logo */}
       <div className="flex h-16 items-center justify-center border-b border-gray-200 dark:border-gray-800">
         <h1 className="text-xl font-bold text-gray-800 dark:text-white">
@@ -59,4 +64,6 @@ export default function Sidebar() {
       </nav>
     </aside>
   );
-}
+};
+
+export default Sidebar;

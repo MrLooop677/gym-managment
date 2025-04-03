@@ -13,6 +13,9 @@ const AddMember = () => {
     email: "",
     role: "",
     status: "Active",
+    startDate: "",
+    endDate: "",
+    phone: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,64 +46,107 @@ const AddMember = () => {
       />
       <PageBreadcrumb pageTitle="Add New Member" />
 
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 className="text-2xl font-bold mb-6">Add New Member</h1>
-        <form onSubmit={handleSubmit} className="max-w-lg">
-          <div className="mb-4">
-            <Label>Name</Label>
-            <Input
-              type="text"
-              name="name"
-              value={member.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
+          <div className="space-y-4">
+            <div className="mb-4">
+              <Label className="block mb-2">Name</Label>
+              <Input
+                type="text"
+                name="name"
+                value={member.name}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded text-base"
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <Label>Email</Label>
-            <Input
-              type="email"
-              name="email"
-              value={member.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
+            <div className="mb-4">
+              <Label className="block mb-2">Email</Label>
+              <Input
+                type="email"
+                name="email"
+                value={member.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded text-base"
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <Label>Role</Label>
-            <Input
-              type="text"
-              name="role"
-              value={member.role}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
+            <div className="mb-4">
+              <Label className="block mb-2">Phone Number</Label>
+              <Input
+                type="tel"
+                name="phone"
+                value={member.phone}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded text-base"
+                required
+                placeholder="Enter phone number"
+              />
+            </div>
 
-          <div className="mb-4">
-            <Label>Status</Label>
-            <select
-              name="status"
-              value={member.status}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-            >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
+            <div className="mb-4">
+              <Label className="block mb-2">Role</Label>
+              <Input
+                type="text"
+                name="role"
+                value={member.role}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded text-base"
+                required
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Add Member
-          </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <Label className="block mb-2">Start Date</Label>
+                <Input
+                  type="date"
+                  name="startDate"
+                  value={member.startDate}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded text-base"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <Label className="block mb-2">End Date</Label>
+                <Input
+                  type="date"
+                  name="endDate"
+                  value={member.endDate}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded text-base"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <Label className="block mb-2">Status</Label>
+              <select
+                name="status"
+                value={member.status}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded text-base"
+              >
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="submit"
+                className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"
+              >
+                Add Member
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </>

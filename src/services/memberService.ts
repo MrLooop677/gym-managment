@@ -8,6 +8,9 @@ export interface Member {
   email: string;
   role: string;
   status: string;
+  startDate: string;
+  endDate: string;
+  phone: string;
 }
 
 export const memberService = {
