@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { memberService, Member } from "../../services/memberService";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const MembersList = () => {
   const { t } = useTranslation();
@@ -42,10 +42,25 @@ const MembersList = () => {
     return subscriptionEnd < today;
   };
 
-  const createWhatsAppLink = (phone: string | undefined) => {
-    if (!phone) return '#';
-    const cleanPhone = phone.replace(/\D/g, '');
-    return `https://wa.me/${cleanPhone}`;
+  /**
+   * Build a WhatsApp link with a prefilled message.
+   */
+  const createWhatsAppLink = (
+    phone: string | undefined,
+    memberName: string,
+    endDate: string
+  ) => {
+    if (!phone) return "#";
+    // strip out non-digits
+    const cleanPhone = phone.replace(/\D/g, "");
+    // craft your message
+    const message = `السلام عليكم  ${memberName}حابب ابلغك ان اشتراكك انتهى  يوم   ${new Date(
+      endDate
+    ).toLocaleDateString()}. من فضلك حاول التجديد`;
+    // encode it for a URL
+    const encodedMessage = encodeURIComponent(message);
+    // return the full wa.me link
+    return `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
   };
 
   const shouldShowWhatsApp = (member: Member) => {
@@ -64,7 +79,7 @@ const MembersList = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold mb-4 sm:mb-0">{t("Members List")}</h1>
+          <h1 className="text-2xl font-bold mb-4 sm:mb-0">{t("Members")}</h1>
           <Link
             to="/members/add"
             className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
@@ -76,26 +91,47 @@ const MembersList = () => {
         {/* Mobile view: Card layout */}
         <div className="block lg:hidden">
           {members.map((member) => (
-            <div 
+            <div
               key={member.id}
               className={`mb-4 rounded-lg shadow p-4 ${
-                isSubscriptionExpired(member.endDate) ? 'bg-red-100' : 'bg-white'
+                isSubscriptionExpired(member.endDate)
+                  ? "bg-red-100"
+                  : "bg-white"
               }`}
             >
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold">{member.name}</h3>
-                <span className={`px-2 py-1 rounded text-sm ${
-                  member.status === t('Active') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                }`}>
+                <span
+                  className={`px-2 py-1 rounded text-sm ${
+                    member.status === t("Active")
+                      ? "bg-green-100 text-green-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
                   {t(member.status)}
                 </span>
               </div>
               <div className="space-y-2">
-                <p><span className="font-medium">{t("Email")}:</span> {member.email}</p>
-                <p><span className="font-medium">{t("Phone")}:</span> {member.phone}</p>
-                <p><span className="font-medium">{t("Role")}:</span> {t(member.role)}</p>
-                <p><span className="font-medium">{t("Start Date")}:</span> {new Date(member.startDate).toLocaleDateString()}</p>
-                <p><span className="font-medium">{t("End Date")}:</span> {new Date(member.endDate).toLocaleDateString()}</p>
+                <p>
+                  <span className="font-medium">{t("Email")}:</span>{" "}
+                  {member.email}
+                </p>
+                <p>
+                  <span className="font-medium">{t("Phone")}:</span>{" "}
+                  {member.phone}
+                </p>
+                <p>
+                  <span className="font-medium">{t("Weight")}:</span>{" "}
+                  {t(member.role)}
+                </p>
+                <p>
+                  <span className="font-medium">{t("Start Date")}:</span>{" "}
+                  {new Date(member.startDate).toLocaleDateString()}
+                </p>
+                <p>
+                  <span className="font-medium">{t("End Date")}:</span>{" "}
+                  {new Date(member.endDate).toLocaleDateString()}
+                </p>
                 <div className="flex space-x-2 mt-4">
                   <Link
                     to={`/members/${member.id}`}
@@ -117,7 +153,11 @@ const MembersList = () => {
                   </button>
                   {shouldShowWhatsApp(member) && (
                     <a
-                      href={createWhatsAppLink(member.phone)}
+                      href={createWhatsAppLink(
+                        member.phone,
+                        member.name,
+                        member.endDate
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
@@ -139,7 +179,7 @@ const MembersList = () => {
                 <th className="px-6 py-3 border-b">{t("Name")}</th>
                 <th className="px-6 py-3 border-b">{t("Email")}</th>
                 <th className="px-6 py-3 border-b">{t("Phone")}</th>
-                <th className="px-6 py-3 border-b">{t("Role")}</th>
+                <th className="px-6 py-3 border-b">{t("Weight")}</th>
                 <th className="px-6 py-3 border-b">{t("Status")}</th>
                 <th className="px-6 py-3 border-b">{t("Start Date")}</th>
                 <th className="px-6 py-3 border-b">{t("End Date")}</th>
@@ -148,23 +188,33 @@ const MembersList = () => {
             </thead>
             <tbody>
               {members.map((member) => (
-                <tr 
+                <tr
                   key={member.id}
-                  className={isSubscriptionExpired(member.endDate) ? 'bg-red-50' : ''}
+                  className={
+                    isSubscriptionExpired(member.endDate) ? "bg-red-50" : ""
+                  }
                 >
                   <td className="px-6 py-4 border-b">{member.name}</td>
                   <td className="px-6 py-4 border-b">{member.email}</td>
                   <td className="px-6 py-4 border-b">{member.phone}</td>
-                  <td className="px-6 py-4 border-b">{t(member.role)}</td>
+                  <td className="px-6 py-4 border-b">{t(member.weight)}</td>
                   <td className="px-6 py-4 border-b">
-                    <span className={`px-2 py-1 rounded text-sm ${
-                      member.status === t('Active') ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded text-sm ${
+                        member.status === t("Active")
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
                       {t(member.status)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 border-b">{new Date(member.startDate).toLocaleDateString()}</td>
-                  <td className="px-6 py-4 border-b">{new Date(member.endDate).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 border-b">
+                    {new Date(member.startDate).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 border-b">
+                    {new Date(member.endDate).toLocaleDateString()}
+                  </td>
                   <td className="px-6 py-4 border-b">
                     <div className="flex space-x-2">
                       <Link
@@ -187,7 +237,11 @@ const MembersList = () => {
                       </button>
                       {shouldShowWhatsApp(member) && (
                         <a
-                          href={createWhatsAppLink(member.phone)}
+                          href={createWhatsAppLink(
+                            member.phone,
+                            member.name,
+                            member.endDate
+                          )}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-green-500 hover:text-green-700"
