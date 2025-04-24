@@ -122,17 +122,17 @@ const MemberProfile = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2">Role:</label>
+            <label className="block mb-2">Weight:</label>
             {isEditing ? (
               <input
                 type="text"
-                name="role"
-                value={member.role}
+                name="weight"
+                value={member.weight}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded"
               />
             ) : (
-              <div className="px-3 py-2">{member.role}</div>
+              <div className="px-3 py-2">{member.weight}</div>
             )}
           </div>
 

@@ -1,0 +1,98 @@
+/* RTL Support */
+[dir="rtl"] {
+    /* Text alignment */
+    text-align: right;
+}
+
+[dir="rtl"] .flex {
+    /* Reverse flex direction for RTL */
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .mr-4 {
+    margin-right: 0;
+    margin-left: 1rem;
+}
+
+[dir="rtl"] .ml-4 {
+    margin-left: 0;
+    margin-right: 1rem;
+}
+
+/* RTL padding adjustments */
+[dir="rtl"] .pl-4 {
+    padding-left: 0;
+    padding-right: 1rem;
+}
+
+[dir="rtl"] .pr-4 {
+    padding-right: 0;
+    padding-left: 1rem;
+}
+
+/* RTL border adjustments */
+[dir="rtl"] .border-l {
+    border-left: none;
+    border-right: 1px solid;
+}
+
+[dir="rtl"] .border-r {
+    border-right: none;
+    border-left: 1px solid;
+}
+
+/* RTL rounded corners */
+[dir="rtl"] .rounded-l {
+    border-radius: 0;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+[dir="rtl"] .rounded-r {
+    border-radius: 0;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+/* RTL table adjustments */
+[dir="rtl"] table {
+    text-align: right;
+}
+
+/* RTL form elements */
+[dir="rtl"] input,
+[dir="rtl"] textarea {
+    text-align: right;
+}
+
+/* RTL icons and arrows */
+[dir="rtl"] .transform-rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* RTL breadcrumb separator */
+[dir="rtl"] .breadcrumb-separator {
+    transform: rotate(180deg);
+}
+
+/* RTL dropdown menus */
+[dir="rtl"] .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+/* RTL sidebar */
+[dir="rtl"] .sidebar {
+    right: 0;
+    left: auto;
+}
+
+/* RTL notifications */
+[dir="rtl"] .notifications {
+    right: auto;
+    left: 0;
+}

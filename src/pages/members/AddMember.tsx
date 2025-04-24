@@ -11,7 +11,7 @@ const AddMember = () => {
   const [member, setMember] = useState<Omit<Member, "id">>({
     name: "",
     email: "",
-    role: "",
+    weight: "",
     status: "Active",
     startDate: "",
     endDate: "",
@@ -88,11 +88,11 @@ const AddMember = () => {
             </div>
 
             <div className="mb-4">
-              <Label className="block mb-2">Role</Label>
+              <Label className="block mb-2">Weight</Label>
               <Input
                 type="text"
-                name="role"
-                value={member.role}
+                name="weight"
+                value={member.weight}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded text-base"
                 required
