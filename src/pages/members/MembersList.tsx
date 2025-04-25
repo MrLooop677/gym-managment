@@ -54,9 +54,9 @@ const MembersList = () => {
     // strip out non-digits
     const cleanPhone = phone.replace(/\D/g, "");
     // craft your message
-    const message = `السلام عليكم  ${memberName}حابب ابلغك ان اشتراكك انتهى  يوم   ${new Date(
+    const message = `السلام عليكم  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
       endDate
-    ).toLocaleDateString()}. من فضلك حاول التجديد`;
+    ).toLocaleDateString()}.    `;
     // encode it for a URL
     const encodedMessage = encodeURIComponent(message);
     // return the full wa.me link
@@ -113,8 +113,8 @@ const MembersList = () => {
               </div>
               <div className="space-y-2">
                 <p>
-                  <span className="font-medium">{t("Email")}:</span>{" "}
-                  {member.email}
+                  <span className="font-medium">{t("Goal")}:</span>{" "}
+                  {member.goal}
                 </p>
                 <p>
                   <span className="font-medium">{t("Phone")}:</span>{" "}
@@ -133,12 +133,12 @@ const MembersList = () => {
                   {new Date(member.endDate).toLocaleDateString()}
                 </p>
                 <div className="flex space-x-2 mt-4">
-                  <Link
+                  {/* <Link
                     to={`/members/${member.id}`}
                     className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
                   >
                     {t("View Profile")}
-                  </Link>
+                  </Link> */}
                   <Link
                     to={`/members/edit/${member.id}`}
                     className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600"
@@ -177,7 +177,7 @@ const MembersList = () => {
             <thead>
               <tr>
                 <th className="px-6 py-3 border-b">{t("Name")}</th>
-                <th className="px-6 py-3 border-b">{t("Email")}</th>
+                <th className="px-6 py-3 border-b">{t("Goal")}</th>
                 <th className="px-6 py-3 border-b">{t("Phone")}</th>
                 <th className="px-6 py-3 border-b">{t("Weight")}</th>
                 <th className="px-6 py-3 border-b">{t("Status")}</th>
@@ -195,7 +195,7 @@ const MembersList = () => {
                   }
                 >
                   <td className="px-6 py-4 border-b">{member.name}</td>
-                  <td className="px-6 py-4 border-b">{member.email}</td>
+                  <td className="px-6 py-4 border-b">{member.goal}</td>
                   <td className="px-6 py-4 border-b">{member.phone}</td>
                   <td className="px-6 py-4 border-b">{t(member.weight)}</td>
                   <td className="px-6 py-4 border-b">
@@ -217,12 +217,12 @@ const MembersList = () => {
                   </td>
                   <td className="px-6 py-4 border-b">
                     <div className="flex space-x-2">
-                      <Link
+                      {/* <Link
                         to={`/members/${member.id}`}
                         className="text-blue-500 hover:text-blue-700"
                       >
                         {t("View")}
-                      </Link>
+                      </Link> */}
                       <Link
                         to={`/members/edit/${member.id}`}
                         className="text-yellow-500 hover:text-yellow-700"
