@@ -45,26 +45,28 @@ const MembersList = () => {
   /**
    * Build a WhatsApp link with a prefilled message.
    */
+  const shouldShowWhatsApp = (member: Member) => {
+    return isSubscriptionExpired(member.endDate) && member.phone;
+  };
   const createWhatsAppLink = (
     phone: string | undefined,
     memberName: string,
-    endDate: string
+    endDate: string,
+    member: Member
   ) => {
     if (!phone) return "#";
     // strip out non-digits
     const cleanPhone = phone.replace(/\D/g, "");
     // craft your message
-    const message = `السلام عليكم  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
-      endDate
-    ).toLocaleDateString()}.    `;
+    const message = shouldShowWhatsApp(member)
+      ? `السلام عليكم  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
+          endDate
+        ).toLocaleDateString()}.    `
+      : "السلام عليكم معك فريق اداره hero gym ";
     // encode it for a URL
     const encodedMessage = encodeURIComponent(message);
     // return the full wa.me link
     return `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
-  };
-
-  const shouldShowWhatsApp = (member: Member) => {
-    return isSubscriptionExpired(member.endDate) && member.phone;
   };
 
   if (loading) return <div>{t("Loading")}...</div>;
@@ -113,8 +115,8 @@ const MembersList = () => {
               </div>
               <div className="space-y-2">
                 <p>
-                  <span className="font-medium">{t("Goal")}:</span>{" "}
-                  {member.goal}
+                  <span className="font-medium">{t("Type")}:</span>{" "}
+                  {member.type}
                 </p>
                 <p>
                   <span className="font-medium">{t("Phone")}:</span>{" "}
@@ -151,20 +153,20 @@ const MembersList = () => {
                   >
                     {t("Delete")}
                   </button>
-                  {shouldShowWhatsApp(member) && (
-                    <a
-                      href={createWhatsAppLink(
-                        member.phone,
-                        member.name,
-                        member.endDate
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
-                    >
-                      WhatsApp
-                    </a>
-                  )}
+
+                  <a
+                    href={createWhatsAppLink(
+                      member.phone,
+                      member.name,
+                      member.endDate,
+                      member
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                  >
+                    WhatsApp
+                  </a>
                 </div>
               </div>
             </div>
@@ -177,7 +179,7 @@ const MembersList = () => {
             <thead>
               <tr>
                 <th className="px-6 py-3 border-b">{t("Name")}</th>
-                <th className="px-6 py-3 border-b">{t("Goal")}</th>
+                <th className="px-6 py-3 border-b">{t("Type")}</th>
                 <th className="px-6 py-3 border-b">{t("Phone")}</th>
                 <th className="px-6 py-3 border-b">{t("Weight")}</th>
                 <th className="px-6 py-3 border-b">{t("Status")}</th>
@@ -195,7 +197,7 @@ const MembersList = () => {
                   }
                 >
                   <td className="px-6 py-4 border-b">{member.name}</td>
-                  <td className="px-6 py-4 border-b">{member.goal}</td>
+                  <td className="px-6 py-4 border-b">{member.type}</td>
                   <td className="px-6 py-4 border-b">{member.phone}</td>
                   <td className="px-6 py-4 border-b">{t(member.weight)}</td>
                   <td className="px-6 py-4 border-b">
@@ -235,20 +237,20 @@ const MembersList = () => {
                       >
                         {t("Delete")}
                       </button>
-                      {shouldShowWhatsApp(member) && (
-                        <a
-                          href={createWhatsAppLink(
-                            member.phone,
-                            member.name,
-                            member.endDate
-                          )}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-green-500 hover:text-green-700"
-                        >
-                          WhatsApp
-                        </a>
-                      )}
+
+                      <a
+                        href={createWhatsAppLink(
+                          member.phone,
+                          member.name,
+                          member.endDate,
+                          member
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-green-500 hover:text-green-700"
+                      >
+                        WhatsApp
+                      </a>
                     </div>
                   </td>
                 </tr>
