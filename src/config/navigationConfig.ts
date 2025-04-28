@@ -19,6 +19,11 @@ export const navigationConfig = [
         path: "/members/add",
         icon: IconUserPlus,
       },
+      {
+        title: "Daily Income",
+        path: "/daily-income",
+        icon: IconUserPlus,
+      },
     ],
   },
 ];

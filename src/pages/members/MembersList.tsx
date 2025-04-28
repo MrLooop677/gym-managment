@@ -9,6 +9,11 @@ const MembersList = () => {
   const { t } = useTranslation();
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  const filteredMembers = members.filter((member) =>
+    member.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   useEffect(() => {
     loadMembers();
@@ -80,6 +85,16 @@ const MembersList = () => {
       <PageBreadcrumb pageTitle={t("Members List")} />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Search Bar */}
+        <div className="mb-4 flex justify-end m-2">
+          <input
+            type="text"
+            placeholder={t("Search by name")}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full max-w-xs border px-3 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <h1 className="text-2xl font-bold mb-4 sm:mb-0">{t("Members")}</h1>
           <Link
@@ -92,7 +107,7 @@ const MembersList = () => {
 
         {/* Mobile view: Card layout */}
         <div className="block lg:hidden">
-          {members.map((member) => (
+          {filteredMembers.map((member) => (
             <div
               key={member.id}
               className={`mb-4 rounded-lg shadow p-4 ${
@@ -189,7 +204,7 @@ const MembersList = () => {
               </tr>
             </thead>
             <tbody>
-              {members.map((member) => (
+              {filteredMembers.map((member) => (
                 <tr
                   key={member.id}
                   className={

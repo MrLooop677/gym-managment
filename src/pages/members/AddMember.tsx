@@ -36,7 +36,6 @@ const AddMember = () => {
       ...prev,
       [name]: value,
     }));
-    console.log("members", member);
   };
 
   return (

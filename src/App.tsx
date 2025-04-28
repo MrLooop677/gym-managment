@@ -4,10 +4,12 @@ import { useEffect } from 'react';
 
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import DailyIncome from "./pages/Dashboard/DailyIncome";
 import Layout from "./layout";
 import MembersList from "./pages/members/MembersList";
 import AddMember from "./pages/members/AddMember";
 import MemberProfile from "./pages/members/MemberProfile";
+import EditMember from "./pages/members/EditMember";
 
 import './styles/rtl.css';
 
@@ -31,8 +33,10 @@ export default function App() {
           <Route path="members">
             <Route index element={<MembersList />} />
             <Route path="add" element={<AddMember />} />
+            <Route path="edit/:id" element={<EditMember />} />
             <Route path=":id" element={<MemberProfile />} />
           </Route>
+          <Route path="daily-income" element={<DailyIncome />} />
         </Route>
       </Routes>
     </Router>
