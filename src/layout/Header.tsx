@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IconSun, IconMoon } from "@tabler/icons-react";
+import Logout from "../components/auth/Logout";
 
 export default function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -8,6 +9,8 @@ export default function Header() {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle("dark");
   };
+
+  const isAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
 
   return (
     <header className="border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-800 dark:bg-gray-800">
@@ -29,13 +32,17 @@ export default function Header() {
             )}
           </button>
 
-          {/* Profile Menu - Can be expanded later */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
-              Admin
-            </span>
-            <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-          </div>
+          {isAuthenticated && (
+            <>
+              <Logout />
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Admin
+                </span>
+                <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </header>

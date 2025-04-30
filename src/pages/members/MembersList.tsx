@@ -64,7 +64,7 @@ const MembersList = () => {
     const cleanPhone = phone.replace(/\D/g, "");
     // craft your message
     const message = shouldShowWhatsApp(member)
-      ? `السلام عليكم  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
+      ? ` السلام عليكم معك فريق اداره hero gym  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
           endDate
         ).toLocaleDateString()}.    `
       : "السلام عليكم معك فريق اداره hero gym ";

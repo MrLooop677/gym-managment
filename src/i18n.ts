@@ -49,6 +49,13 @@ const resources = {
       "Monthly Statistics": "الإحصائيات الشهرية",
       "Recent Activities": "النشاطات الأخيرة",
 
+      // Authentication
+      "signIn": "تسجيل الدخول",
+      "username": "اسم المستخدم",
+      "password": "كلمة المرور",
+      "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+      "logout": "تسجيل الخروج",
+
       // Common
       "Loading": "جاري التحميل",
       "No results found": "لم يتم العثور على نتائج",
