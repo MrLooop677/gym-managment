@@ -22,12 +22,12 @@ const Login = () => {
     if (username === validUsername && password === validPassword) {
       // Store authentication state
       localStorage.setItem('isLoggedIn', 'true');
-      // Clear form fields
-      setUsername('');
-      setPassword('');
+      // // Clear form fields
+      // setUsername('');
+      // setPassword('');
       window.location.reload();
       // Navigate to dashboard
-      navigate('/dashboard', { replace: true });
+      // navigate('/dashboard', { replace: true });
     } else {
       setError(t('auth.invalidCredentials'));
     }
