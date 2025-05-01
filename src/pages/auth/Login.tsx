@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,13 +18,13 @@ const Login = () => {
     const validUsername = "mamoud ezz";
     const validPassword = "mahmoud@123";
 
-    if (username === validUsername && password === validPassword) {
+    if (username === validUsername && password === validPassword.trim()) {
       // Store authentication state
       localStorage.setItem('isLoggedIn', 'true');
       // // Clear form fields
       // setUsername('');
       // setPassword('');
-      window.location.reload();
+      window.location.href = '/';
       // Navigate to dashboard
       // navigate('/dashboard', { replace: true });
     } else {
@@ -47,7 +46,7 @@ const Login = () => {
           </h2>
         </div>
         <div className='flex justify-center mb-4'>
-          <img src='/src/assets/images/hero-gym.png' alt='Hero Gym Logo' className='w-24 h-24'/>
+          <img src="/hero-gym.png" alt='Hero Gym Logo' className='w-24 h-24'/>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <div className="rounded-md shadow-sm -space-y-px">

@@ -9,9 +9,10 @@ const Logout = () => {
     // Clear authentication state
     localStorage.removeItem('isLoggedIn');
     // Update the authentication state in the app
-    window.location.reload();
+    // window.location.reload();
+    window.location.href = '/';
     // Redirect to login page
-    navigate('/login', { replace: true });
+    // navigate('/login', { replace: true });
   };
 
   return (
