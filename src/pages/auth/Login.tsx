@@ -18,7 +18,7 @@ const Login = () => {
     const validUsername = "mamoud ezz";
     const validPassword = "mahmoud@123";
 
-    if (username === validUsername && password === validPassword.trim()) {
+    if (username.trim() === validUsername.trim() && password.trim() === validPassword.trim()) {
       // Store authentication state
       localStorage.setItem('isLoggedIn', 'true');
       // // Clear form fields
