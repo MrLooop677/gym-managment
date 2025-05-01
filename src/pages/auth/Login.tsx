@@ -15,7 +15,7 @@ const Login = () => {
     setError('');
     
     // Static credentials
-    const validUsername = "mamoud ezz";
+    const validUsername = "mahmoud ezz";
     const validPassword = "mahmoud@123";
 
     if (username.trim() === validUsername.trim() && password.trim() === validPassword.trim()) {

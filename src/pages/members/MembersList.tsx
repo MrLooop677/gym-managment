@@ -67,7 +67,11 @@ const MembersList = () => {
       ? ` السلام عليكم معك فريق اداره hero gym  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
           endDate
         ).toLocaleDateString()}.    `
-      : "السلام عليكم معك فريق اداره hero gym ";
+      : `عميلنا العزيز لقد تم بدأ أشتراكك فى heros gym بتاريخ     ${new Date(
+          member.startDate
+        ).toLocaleDateString()} الى ${new Date(
+          member.endDate
+        ).toLocaleDateString()} شرفنا انضمامك الى heros gym `;
     // encode it for a URL
     const encodedMessage = encodeURIComponent(message);
     // return the full wa.me link
