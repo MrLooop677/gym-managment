@@ -10,13 +10,13 @@ export default function Header() {
     document.documentElement.classList.toggle("dark");
   };
 
-  const isAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
+  const isAuthenticated = localStorage.getItem("isLoggedIn") === "true";
 
   return (
     <header className="border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-800 dark:bg-gray-800">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-          Gym Management System
+          ادارة الصالة الرياضية
         </h2>
 
         <div className="flex items-center gap-4">
@@ -37,7 +37,7 @@ export default function Header() {
               <Logout />
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                  Admin
+                  صاحب الحساب
                 </span>
                 <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700"></div>
               </div>
