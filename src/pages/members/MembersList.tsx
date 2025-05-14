@@ -31,7 +31,7 @@ const MembersList = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm(t("Are you sure you want to delete this member?"))) {
+    if (window.confirm(t("هل انت متاكد من حذف هذا العضو؟"))) {
       try {
         await memberService.delete(id);
         setMembers(members.filter((member) => member.id !== id));
@@ -83,29 +83,31 @@ const MembersList = () => {
   return (
     <>
       <PageMeta
-        title={t("Gym Members | Management Dashboard")}
-        description={t("Gym member management dashboard")}
+        title={t("جميع الاعضاء ")}
+        description={t("جميع الاعضاء في الجيم")}
       />
-      <PageBreadcrumb pageTitle={t("Members List")} />
+      <PageBreadcrumb pageTitle={t("جميع الاعضاء")} />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Search Bar */}
         <div className="mb-4 flex justify-end m-2">
           <input
             type="text"
-            placeholder={t("Search by name")}
+            placeholder={t("البحث بواسطه الاسم")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full max-w-xs border px-3 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold mb-4 sm:mb-0">{t("Members")}</h1>
+          <h1 className="text-2xl font-bold mb-4 sm:mb-0">
+            {t("جميع الاعضاء")}
+          </h1>
           <Link
             to="/members/add"
             className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
           >
-            {t("Add Member")}
+            {t("اضافه عضو جديد")}
           </Link>
         </div>
 
@@ -134,23 +136,27 @@ const MembersList = () => {
               </div>
               <div className="space-y-2">
                 <p>
-                  <span className="font-medium">{t("Type")}:</span>{" "}
+                  <span className="font-medium">{t("نوع الاشتراك")}:</span>{" "}
                   {member.type}
                 </p>
                 <p>
-                  <span className="font-medium">{t("Phone")}:</span>{" "}
+                  <span className="font-medium">{t("رقم الهاتف")}:</span>{" "}
                   {member.phone}
                 </p>
                 <p>
-                  <span className="font-medium">{t("Weight")}:</span>{" "}
+                  <span className="font-medium">{t("الوزن")}:</span>{" "}
                   {t(member.role)}
                 </p>
                 <p>
-                  <span className="font-medium">{t("Start Date")}:</span>{" "}
+                  <span className="font-medium">
+                    {t("تاريخ بدايه الاشتراك")}:
+                  </span>{" "}
                   {new Date(member.startDate).toLocaleDateString()}
                 </p>
                 <p>
-                  <span className="font-medium">{t("End Date")}:</span>{" "}
+                  <span className="font-medium">
+                    {t("تاريخ انتهاء الاشتراك")}:
+                  </span>{" "}
                   {new Date(member.endDate).toLocaleDateString()}
                 </p>
                 <div className="flex space-x-2 mt-4">
@@ -197,14 +203,18 @@ const MembersList = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-6 py-3 border-b">{t("Name")}</th>
-                <th className="px-6 py-3 border-b">{t("Type")}</th>
-                <th className="px-6 py-3 border-b">{t("Phone")}</th>
-                <th className="px-6 py-3 border-b">{t("Weight")}</th>
-                <th className="px-6 py-3 border-b">{t("Status")}</th>
-                <th className="px-6 py-3 border-b">{t("Start Date")}</th>
-                <th className="px-6 py-3 border-b">{t("End Date")}</th>
-                <th className="px-6 py-3 border-b">{t("Actions")}</th>
+                <th className="px-6 py-3 border-b">{t("الاسم")}</th>
+                <th className="px-6 py-3 border-b">{t("نوع الاشتراك")}</th>
+                <th className="px-6 py-3 border-b">{t("رقم الهاتف")}</th>
+                <th className="px-6 py-3 border-b">{t("الوزن")}</th>
+                <th className="px-6 py-3 border-b">{t("الحالة")}</th>
+                <th className="px-6 py-3 border-b">
+                  {t("تاريخ بدايه الاشتراك")}
+                </th>
+                <th className="px-6 py-3 border-b">
+                  {t("تاريخ انتهاء الاشتراك")}
+                </th>
+                <th className="px-6 py-3 border-b">{t("العمليات")}</th>
               </tr>
             </thead>
             <tbody>

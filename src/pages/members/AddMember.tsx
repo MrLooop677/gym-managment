@@ -41,17 +41,17 @@ const AddMember = () => {
   return (
     <>
       <PageMeta
-        title="Add New Member | Gym Management"
-        description="Add new member to the gym"
+        title="اضافه عضو جديد | Gym Management"
+        description="اضافه عضو جديد to the gym"
       />
-      <PageBreadcrumb pageTitle="Add New Member" />
+      <PageBreadcrumb pageTitle="اضافه عضو جديد" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <h1 className="text-2xl font-bold mb-6">Add New Member</h1>
+        <h1 className="text-2xl font-bold mb-6">اضافه عضو جديد</h1>
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
           <div className="space-y-4">
             <div className="mb-4">
-              <Label className="block mb-2">Name</Label>
+              <Label className="block mb-2">الاسم</Label>
               <Input
                 type="text"
                 name="name"
@@ -63,7 +63,7 @@ const AddMember = () => {
             </div>
 
             <div className="mb-4">
-              <Label className="block mb-2">Type</Label>
+              <Label className="block mb-2">نوع الاشتراك</Label>
               <Input
                 type="type"
                 name="type"
@@ -75,7 +75,7 @@ const AddMember = () => {
             </div>
 
             <div className="mb-4">
-              <Label className="block mb-2">Phone Number</Label>
+              <Label className="block mb-2">رقم الهاتف</Label>
               <Input
                 type="tel"
                 name="phone"
@@ -83,12 +83,12 @@ const AddMember = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded text-base"
                 required
-                placeholder="Enter phone number"
+                placeholder="02ءءءءءءء"
               />
             </div>
 
             <div className="mb-4">
-              <Label className="block mb-2">Weight</Label>
+              <Label className="block mb-2">الوزن</Label>
               <Input
                 type="text"
                 name="weight"
@@ -101,7 +101,7 @@ const AddMember = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="mb-4">
-                <Label className="block mb-2">Start Date</Label>
+                <Label className="block mb-2">تاريخ بدء الاشتراك</Label>
                 <Input
                   type="date"
                   name="startDate"
@@ -113,7 +113,7 @@ const AddMember = () => {
               </div>
 
               <div className="mb-4">
-                <Label className="block mb-2">End Date</Label>
+                <Label className="block mb-2">تاريخ انتهاء الاشتراك</Label>
                 <Input
                   type="date"
                   name="endDate"
@@ -126,15 +126,15 @@ const AddMember = () => {
             </div>
 
             <div className="mb-4">
-              <Label className="block mb-2">Status</Label>
+              <Label className="block mb-2">حالة الاشتراك</Label>
               <select
                 name="status"
                 value={member.status}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded text-base"
               >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
+                <option value="Active">نشط</option>
+                <option value="Inactive">غير نشط</option>
               </select>
             </div>
 
@@ -143,7 +143,7 @@ const AddMember = () => {
                 type="submit"
                 className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"
               >
-                Add Member
+                اضافه عضو جديد
               </button>
             </div>
           </div>

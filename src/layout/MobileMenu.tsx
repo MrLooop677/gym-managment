@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const links = [
-  { path: '/', label: 'Home' },
-  { path: '/members', label: 'All Members' },
+  { path: "/", label: "الصفحة الرئيسية" },
+  { path: "/members", label: "كل العضويات" },
 
   // Add more links as needed
 ];
@@ -19,11 +19,13 @@ const MobileMenu = () => {
 
   // New function to handle clicks outside the menu
   const handleClickOutside = (event: MouseEvent) => {
-    const menu = document.getElementById('mobile-menu');
-    const button = document.getElementById('menu-button');
+    const menu = document.getElementById("mobile-menu");
+    const button = document.getElementById("menu-button");
     if (
-      menu && !menu.contains(event.target as Node) && 
-      button && !button.contains(event.target as Node)
+      menu &&
+      !menu.contains(event.target as Node) &&
+      button &&
+      !button.contains(event.target as Node)
     ) {
       setIsOpen(false);
     }
@@ -31,28 +33,31 @@ const MobileMenu = () => {
 
   // Adding event listener on component mount
   React.useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   return (
     <div className="relative">
-      <button 
+      <button
         id="menu-button"
-        onClick={toggleMenu} 
+        onClick={toggleMenu}
         className="p-2 text-gray-800 dark:text-gray-200 bg-gray-200 rounded-md"
       >
-        {t('Menu')}
+        {t("Menu")}
       </button>
       {isOpen && (
-        <div id="mobile-menu" className="absolute bg-white dark:bg-gray-800 mt-2 rounded-md shadow-lg">
+        <div
+          id="mobile-menu"
+          className="absolute bg-white dark:bg-gray-800 mt-2 rounded-md shadow-lg"
+        >
           <ul>
             {links.map((link) => (
               <li key={link.path}>
-                <Link 
-                  to={link.path} 
+                <Link
+                  to={link.path}
                   className="block p-2 text-gray-800 dark:text-gray-200"
                   onClick={() => setIsOpen(false)}
                 >
@@ -67,4 +72,4 @@ const MobileMenu = () => {
   );
 };
 
-export default MobileMenu; 
+export default MobileMenu;

@@ -2,25 +2,25 @@ import { IconDashboard, IconUsers, IconUserPlus } from "@tabler/icons-react";
 
 export const navigationConfig = [
   {
-    title: "Dashboard",
+    title: "الصفحة الرئيسية",
     path: "/",
     icon: IconDashboard,
   },
   {
-    title: "Members",
+    title: "الاعضاء",
     icon: IconUsers,
     children: [
       {
-        title: "All Members",
+        title: "كل الاعضاء",
         path: "/members",
       },
       {
-        title: "Add Member",
+        title: "اضافه عضو جديد",
         path: "/members/add",
         icon: IconUserPlus,
       },
       {
-        title: "Daily Income",
+        title: "الدخل اليومي",
         path: "/daily-income",
         icon: IconUserPlus,
       },

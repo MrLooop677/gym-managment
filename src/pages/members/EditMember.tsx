@@ -15,14 +15,13 @@ const EditMember = () => {
 
   useEffect(() => {
     if (id) {
-      memberService.getById(id)
+      memberService
+        .getById(id)
         .then(setMember)
         .catch(() => setError(t("Error loading member details")))
         .finally(() => setLoading(false));
     }
- 
   }, [id]);
-
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -32,8 +31,7 @@ const EditMember = () => {
       ...prev,
       [name]: value,
     }));
-    console.log("members", member);
-  }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!member) return;
@@ -45,18 +43,21 @@ const EditMember = () => {
     }
   };
 
-  if (loading) return <div>{t("Loading")}...</div>;
+  if (loading) return <div>{t("تحميل")}...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
-  if (!member) return <div>{t("Member not found!")}</div>;
+  if (!member) return <div>{t("لا يوجد عضو")}</div>;
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <PageMeta title={t("Edit Member")} description={t("Edit member details")} />
-      <PageBreadcrumb pageTitle={t("Edit Member")} />
-      <h1 className="text-2xl font-bold mb-6">{t("Edit Member")}</h1>
+      <PageMeta
+        title={t("تعديل بيانات العضو")} // "Edit Member | Gym Management"
+        description={t("تعديل بيانات العضو في الجيم")} // "Edit member details in the gym"
+      />
+      <PageBreadcrumb pageTitle={t("تعديل بيانات العضو")} />
+      <h1 className="text-2xl font-bold mb-6">{t("تعديل بيانات العضو")}</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
         <div>
-          <label className="block font-medium mb-1">{t("Name")}</label>
+          <label className="block font-medium mb-1">{t("الاسم")}</label>
           <input
             type="text"
             name="name"
@@ -67,7 +68,7 @@ const EditMember = () => {
           />
         </div>
         <div>
-          <label className="block font-medium mb-1">{t("Weight")}</label>
+          <label className="block font-medium mb-1">{t("الوزن")}</label>
           <input
             type="text"
             name="weight"
@@ -78,7 +79,7 @@ const EditMember = () => {
           />
         </div>
         <div>
-          <label className="block font-medium mb-1">{t("Type")}</label>
+          <label className="block font-medium mb-1">{t("نوع الاشتراك")}</label>
           <input
             type="text"
             name="type"
@@ -89,7 +90,7 @@ const EditMember = () => {
           />
         </div>
         <div>
-          <label className="block font-medium mb-1">{t("Phone")}</label>
+          <label className="block font-medium mb-1">{t("الهاتف")}</label>
           <input
             type="text"
             name="phone"
@@ -100,19 +101,21 @@ const EditMember = () => {
         </div>
 
         <div>
-          <label className="block font-medium mb-1">{t("Status")}</label>
+          <label className="block font-medium mb-1">{t("الحالة")}</label>
           <select
             name="status"
             value={member.status}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
           >
-            <option value="Active">{t("Active")}</option>
-            <option value="Inactive">{t("Inactive")}</option>
+            <option value="Active">{t("نشط")}</option>
+            <option value="Inactive">{t("غير نشط")}</option>
           </select>
         </div>
         <div>
-          <label className="block font-medium mb-1">{t("Start Date")}</label>
+          <label className="block font-medium mb-1">
+            {t("تاريخ بدء الاشتراك")}
+          </label>
           <input
             type="date"
             name="startDate"
@@ -122,7 +125,9 @@ const EditMember = () => {
           />
         </div>
         <div>
-          <label className="block font-medium mb-1">{t("End Date")}</label>
+          <label className="block font-medium mb-1">
+            {t("تاريخ انتهاء الاشتراك")}
+          </label>
           <input
             type="date"
             name="endDate"
@@ -135,7 +140,7 @@ const EditMember = () => {
           type="submit"
           className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
         >
-          {t("Save Changes")}
+          {t("حفظ التعديلات")} {/* "Save Changes" */}
         </button>
       </form>
     </div>

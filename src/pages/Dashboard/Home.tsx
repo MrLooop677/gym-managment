@@ -62,7 +62,9 @@ export default function Dashboard() {
         endDate,
       });
       // Remove from expired list
-      setMembers((prev) => prev.map((m) => m.id === member.id ? { ...m, startDate, endDate } : m));
+      setMembers((prev) =>
+        prev.map((m) => (m.id === member.id ? { ...m, startDate, endDate } : m))
+      );
     } catch (error) {
       alert("Failed to renew membership");
     }
@@ -77,9 +79,17 @@ export default function Dashboard() {
         const today = new Date();
         setStats({
           totalMembers: data.length,
-          activeMembers: data.filter((m: Member) => m.status === "Active").length,
-          expiringMembers: data.filter((m: Member) => new Date(m.endDate) > today && new Date(m.endDate).getTime() - today.getTime() < 7 * 24 * 60 * 60 * 1000).length, // expiring in 7 days
-          expiredMembers: data.filter((m: Member) => new Date(m.endDate) < today).length,
+          activeMembers: data.filter((m: Member) => m.status === "Active")
+            .length,
+          expiringMembers: data.filter(
+            (m: Member) =>
+              new Date(m.endDate) > today &&
+              new Date(m.endDate).getTime() - today.getTime() <
+                7 * 24 * 60 * 60 * 1000
+          ).length, // expiring in 7 days
+          expiredMembers: data.filter(
+            (m: Member) => new Date(m.endDate) < today
+          ).length,
         });
       } catch (error) {
         console.error("Error loading members", error);
@@ -91,21 +101,25 @@ export default function Dashboard() {
   }, []);
 
   // Filter for expired memberships
-  const expiredMemberships = members.filter((member) => new Date(member.endDate) < new Date() && member.name.toLowerCase().includes(search.toLowerCase()));
+  const expiredMemberships = members.filter(
+    (member) =>
+      new Date(member.endDate) < new Date() &&
+      member.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
       <PageMeta
-        title="Dashboard | Gym Management"
-        description="Gym management dashboard"
+        title="الصفحة الرئيسية | ادارة الصالة الرياضية"
+        description="ادارة الصالة الرياضية"
       />
-      <PageBreadcrumb pageTitle="Dashboard" />
+      <PageBreadcrumb pageTitle="الصفحة الرئيسية" />
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {/* Stats Cards */}
         <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-            Total Members
+            كل الاعضاء
           </h3>
           <p className="mt-2 text-3xl font-semibold text-gray-800 dark:text-white/90">
             {stats.totalMembers}
@@ -114,7 +128,7 @@ export default function Dashboard() {
 
         <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-            Active Members
+            الاعضاء النشيطين
           </h3>
           <p className="mt-2 text-3xl font-semibold text-success-500">
             {stats.activeMembers}
@@ -123,7 +137,7 @@ export default function Dashboard() {
 
         <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-            Expiring Soon
+            الاعضاء المنتهية اشتراكهم قريباً
           </h3>
           <p className="mt-2 text-3xl font-semibold text-warning-500">
             {stats.expiringMembers}
@@ -132,7 +146,7 @@ export default function Dashboard() {
 
         <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-            Expired Members
+            الاعضاء المنتهية اشتراكهم
           </h3>
           <p className="mt-2 text-3xl font-semibold text-danger-500">
             {stats.expiredMembers}
@@ -143,13 +157,13 @@ export default function Dashboard() {
       {/* Expiring Memberships Table */}
       <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
         <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-white/90">
-          Expiring Memberships
+          الأعضاء المنتهية اشتراكهم
         </h2>
         {/* Search Bar for Expired Members */}
         <div className="mb-4 flex justify-end m-2">
           <input
             type="text"
-            placeholder="Search by name"
+            placeholder="ابحث عن اسم العضو"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full max-w-xs border px-3 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -160,27 +174,31 @@ export default function Dashboard() {
             <thead>
               <tr className="bg-gray-100/50 dark:bg-gray-800/50">
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Name
+                  الاسم
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Expiry Date
+                  تاريخ انتهاء الاشتراك
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                  WhatsApp
+                  واتساب
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Action
+                  تجديد الاشتراك
                 </th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={3} className="text-center py-4">Loading...</td>
+                  <td colSpan={3} className="text-center py-4">
+                    Loading...
+                  </td>
                 </tr>
               ) : expiredMemberships.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="text-center py-4">No expired memberships found.</td>
+                  <td colSpan={3} className="text-center py-4">
+                    No expired memberships found.
+                  </td>
                 </tr>
               ) : (
                 expiredMemberships.map((member) => (
@@ -197,7 +215,12 @@ export default function Dashboard() {
                     <td className="px-6 py-4">
                       {shouldShowWhatsApp(member) && (
                         <a
-                          href={createWhatsAppLink(member.phone, member.name, member.endDate, member)}
+                          href={createWhatsAppLink(
+                            member.phone,
+                            member.name,
+                            member.endDate,
+                            member
+                          )}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-green-500 hover:text-green-600"
@@ -212,7 +235,7 @@ export default function Dashboard() {
                         className="text-sm text-brand-500 hover:text-brand-600"
                         onClick={() => handleRenew(member)}
                       >
-                        Renew
+                        تجديد الاشتراك
                       </button>
                     </td>
                   </tr>
