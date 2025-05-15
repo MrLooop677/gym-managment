@@ -145,7 +145,7 @@ const MembersList = () => {
                 </p>
                 <p>
                   <span className="font-medium">{t("الوزن")}:</span>{" "}
-                  {t(member.role)}
+                  {t(member.weight)}
                 </p>
                 <p>
                   <span className="font-medium">
@@ -170,13 +170,13 @@ const MembersList = () => {
                     to={`/members/edit/${member.id}`}
                     className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600"
                   >
-                    {t("Edit")}
+                    {t("تعديل")}
                   </Link>
                   <button
                     onClick={() => handleDelete(member.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
                   >
-                    {t("Delete")}
+                    {t("حذف")}
                   </button>
 
                   <a
@@ -190,7 +190,7 @@ const MembersList = () => {
                     rel="noopener noreferrer"
                     className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
                   >
-                    WhatsApp
+                    واتس اب
                   </a>
                 </div>
               </div>

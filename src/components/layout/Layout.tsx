@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,22 +13,22 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isSidebarOpen) {
-      document.body.classList.add('sidebar-open');
+      document.body.classList.add("sidebar-open");
     } else {
-      document.body.classList.remove('sidebar-open');
+      document.body.classList.remove("sidebar-open");
     }
 
     return () => {
-      document.body.classList.remove('sidebar-open');
+      document.body.classList.remove("sidebar-open");
     };
   }, [isSidebarOpen]);
 
   const menuItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/members', label: 'Members', icon: '👥' },
-    { path: '/subscriptions', label: 'Subscriptions', icon: '📅' },
-    { path: '/payments', label: 'Payments', icon: '💰' },
-    { path: '/settings', label: 'Settings', icon: '⚙️' },
+    { path: "/dashboard", label: "Dashboard", icon: "📊" },
+    { path: "/members", label: "Members", icon: "👥" },
+    { path: "/subscriptions", label: "Subscriptions", icon: "📅" },
+    { path: "/payments", label: "Payments", icon: "💰" },
+    { path: "/settings", label: "Settings", icon: "⚙️" },
   ];
 
   return (
@@ -37,14 +37,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div
         className={`fixed top-0 left-0 h-full bg-white shadow-lg z-40
           transform transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full'}
+          ${isSidebarOpen ? "w-64 translate-x-0" : "w-0 -translate-x-full"}
           lg:relative lg:translate-x-0 lg:w-64
         `}
       >
-        
         {/* Logo */}
         <div className="h-16 flex items-center justify-center border-b">
-          <span className={`text-xl font-bold ${isSidebarCollapsed ? 'hidden' : ''}`}>Gym Management</span>
+          <span
+            className={`text-xl font-bold ${
+              isSidebarCollapsed ? "hidden" : ""
+            }`}
+          >
+            اداره الصاله الرياضيه
+          </span>
         </div>
 
         {/* Navigation Items */}
@@ -55,12 +60,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               to={item.path}
               className={`flex items-center px-4 py-3 mb-2 rounded-lg
                 transition-colors duration-200
-                ${location.pathname.startsWith(item.path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}
+                ${
+                  location.pathname.startsWith(item.path)
+                    ? "bg-blue-50 text-blue-700"
+                    : "text-gray-600 hover:bg-gray-50"
+                }
               `}
               onClick={() => setIsSidebarOpen(false)}
             >
               <span className="text-xl mr-3">{item.icon}</span>
-              {!isSidebarCollapsed && <span className="text-sm font-medium">{item.label}</span>}
+              {!isSidebarCollapsed && (
+                <span className="text-sm font-medium">{item.label}</span>
+              )}
             </Link>
           ))}
         </nav>
@@ -79,17 +90,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           viewBox="0 0 24 24"
         >
           {isSidebarOpen ? (
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
               d="M6 18L18 6M6 6l12 12"
             />
           ) : (
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
               d="M4 6h16M4 12h16M4 18h16"
             />
           )}
@@ -98,12 +109,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Main Content */}
       <main className="flex-1 min-h-screen bg-gray-100">
-        <div className="p-4 sm:p-6 lg:p-8">
-          {children}
-        </div>
+        <div className="p-4 sm:p-6 lg:p-8">{children}</div>
       </main>
     </div>
   );
 };
 
-export default Layout; 
+export default Layout;

@@ -46,7 +46,7 @@ const MobileMenu = () => {
         onClick={toggleMenu}
         className="p-2 text-gray-800 dark:text-gray-200 bg-gray-200 rounded-md"
       >
-        {t("Menu")}
+        {t("القائمة")}
       </button>
       {isOpen && (
         <div
