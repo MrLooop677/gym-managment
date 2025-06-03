@@ -5,10 +5,13 @@ import PageMeta from "../../components/common/PageMeta";
 import Input from "../../components/form/input/InputField";
 import Label from "../../components/form/Label";
 import { memberService, Member } from "../../services/memberService";
+import axios from "axios";
 
 const AddMember = () => {
   const navigate = useNavigate();
-  const [member, setMember] = useState<Omit<Member, "id">>({
+  const [member, setMember] = useState<
+    Omit<Member, "id"> & { subscriptionPrice: number }
+  >({
     name: "",
     type: "",
     weight: "",
@@ -16,15 +19,43 @@ const AddMember = () => {
     startDate: "",
     endDate: "",
     phone: "",
+    subscriptionPrice: 0,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await memberService.create(member);
-      navigate("/members");
+      // Create the member
+      const newMember = await memberService.create({
+        ...member,
+        subscriptionPrice: Number(member.subscriptionPrice),
+      });
+
+      // Add subscription income entry
+      if (newMember.subscriptionPrice > 0) {
+        const incomeResponse = await axios.get(
+          "https://plume-numerous-homburg.glitch.me/income"
+        );
+        const incomeData = incomeResponse.data;
+
+        const newEntry = {
+          amount: Number(newMember.subscriptionPrice),
+          date: new Date().toISOString().split("T")[0],
+          type: "subscription",
+          memberId: newMember.id,
+        };
+
+        const updatedEntries = [...(incomeData.dailyEntries || []), newEntry];
+
+        await axios.put("https://plume-numerous-homburg.glitch.me/income", {
+          ...incomeData,
+          dailyEntries: updatedEntries,
+        });
+      }
+
+      navigate("/members"); // Navigate to Income page to trigger refresh
     } catch (error) {
-      console.error("Error creating member:", error);
+      console.error("Error creating member or updating income:", error);
     }
   };
 
@@ -34,7 +65,7 @@ const AddMember = () => {
     const { name, value } = e.target;
     setMember((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "subscriptionPrice" ? Number(value) : value,
     }));
   };
 
@@ -65,7 +96,7 @@ const AddMember = () => {
             <div className="mb-4">
               <Label className="block mb-2">نوع الاشتراك</Label>
               <Input
-                type="type"
+                type="text"
                 name="type"
                 value={member.type}
                 onChange={handleChange}
@@ -83,7 +114,7 @@ const AddMember = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded text-base"
                 required
-                placeholder="02ءءءءءءء"
+                placeholder="02xxxxxxxx"
               />
             </div>
 
@@ -96,6 +127,20 @@ const AddMember = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded text-base"
                 required
+              />
+            </div>
+
+            <div className="mb-4">
+              <Label className="block mb-2">سعر الاشتراك (شهري)</Label>
+              <Input
+                type="number"
+                name="subscriptionPrice"
+                value={member.subscriptionPrice}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded text-base"
+                required
+                placeholder="ادخل سعر الاشتراك الشهري"
+                min="0"
               />
             </div>
 
