@@ -192,7 +192,7 @@ export default function Income() {
         monthlyIncome: 0,
         yearlyIncome: 0,
         dailyIncome: 0,
-        notes: incomeData.notes, // Preserve notes
+        notes: [], // Preserve notes
       };
 
       await axios.put(
