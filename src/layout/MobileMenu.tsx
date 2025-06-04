@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { IconUserPlus } from "@tabler/icons-react";
 
 const links = [
   { path: "/", label: "الصفحة الرئيسية" },
   { path: "/members", label: "كل العضويات" },
+  {
+    label: "الدخل ",
+    path: "/daily-income",
+    icon: IconUserPlus,
+  },
 
   // Add more links as needed
 ];

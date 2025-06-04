@@ -20,7 +20,7 @@ export const navigationConfig = [
         icon: IconUserPlus,
       },
       {
-        title: "الدخل اليومي",
+        title: "الدخل ",
         path: "/daily-income",
         icon: IconUserPlus,
       },
