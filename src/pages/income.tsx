@@ -210,6 +210,82 @@ export default function Income() {
     setRefreshTrigger((prev) => prev + 1);
   };
 
+  const handleDeleteEntry = async (date: string, amount: number) => {
+    try {
+      // Filter out the entry to be deleted
+      const updatedEntries = incomeData.dailyEntries.filter(
+        (entry) => !(entry.date === date && entry.amount === amount)
+      );
+
+      // Recalculate incomes after deletion
+      const dailyIncome = updatedEntries
+        .filter((entry) => entry.date === currentDay)
+        .reduce((acc, entry) => acc + entry.amount, 0);
+
+      const monthlyIncome = updatedEntries
+        .filter((entry) => {
+          const entryDate = new Date(entry.date);
+          return (
+            entryDate.getMonth() + 1 === currentMonth &&
+            entryDate.getFullYear() === currentYear
+          );
+        })
+        .reduce((acc, entry) => acc + entry.amount, 0);
+
+      const yearlyIncome = updatedEntries
+        .filter((entry) => {
+          const entryDate = new Date(entry.date);
+          return entryDate.getFullYear() === currentYear;
+        })
+        .reduce((acc, entry) => acc + entry.amount, 0);
+
+      const updatedIncomeData = {
+        ...incomeData,
+        dailyEntries: updatedEntries,
+        totalIncome: yearlyIncome,
+        monthlyIncome: monthlyIncome,
+        yearlyIncome: yearlyIncome,
+        dailyIncome: dailyIncome,
+      };
+
+      // Send the updated data to the server
+      await axios.put(
+        "https://plume-numerous-homburg.glitch.me/income",
+        updatedIncomeData
+      );
+
+      // Update the state
+      setIncomeData(updatedIncomeData);
+    } catch (error) {
+      console.error("Error deleting entry:", error);
+      alert("Failed to delete entry.");
+    }
+  };
+
+  const handleDeleteNote = async (index: number) => {
+    try {
+      // Create a new array without the deleted note
+      const updatedNotes = incomeData.notes.filter((_, i) => i !== index);
+      
+      const updatedIncomeData = {
+        ...incomeData,
+        notes: updatedNotes,
+      };
+
+      // Send the updated data to the server
+      await axios.put(
+        "https://plume-numerous-homburg.glitch.me/income",
+        updatedIncomeData
+      );
+
+      // Update the state
+      setIncomeData(updatedIncomeData);
+    } catch (error) {
+      console.error("Error deleting note:", error);
+      alert("Failed to delete note.");
+    }
+  };
+
   return (
     <div
       style={{
@@ -322,6 +398,16 @@ export default function Income() {
               <li key={index}>
                 ${entry.amount.toFixed(2)} - {entry.date} (
                 {entry.type === "daily" ? "يومي" : "اشتراك"})
+                <span
+                  onClick={() => handleDeleteEntry(entry.date, entry.amount)}
+                  style={{
+                    cursor: "pointer",
+                    marginLeft: "10px",
+                    color: "red",
+                  }}
+                >
+                  🗑️
+                </span>
               </li>
             ))}
         </ul>
@@ -339,6 +425,16 @@ export default function Income() {
                 dateStyle: "short",
                 timeStyle: "short",
               })}
+              <span
+                onClick={() => handleDeleteNote(index)}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                  color: "red",
+                }}
+              >
+                🗑️
+              </span>
             </li>
           ))}
         </ul>

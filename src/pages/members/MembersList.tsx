@@ -112,7 +112,7 @@ const MembersList = () => {
         </div>
 
         {/* Mobile view: Card layout */}
-        <div className="block lg:hidden">
+        <div className="block xxl:hidden">
           {filteredMembers.map((member) => (
             <div
               key={member.id}
@@ -199,93 +199,95 @@ const MembersList = () => {
         </div>
 
         {/* Desktop view: Table layout */}
-        <div className="hidden lg:block overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 border-b">{t("الاسم")}</th>
-                <th className="px-6 py-3 border-b">{t("نوع الاشتراك")}</th>
-                <th className="px-6 py-3 border-b">{t("رقم الهاتف")}</th>
-                <th className="px-6 py-3 border-b">{t("الوزن")}</th>
-                <th className="px-6 py-3 border-b">{t("الحالة")}</th>
-                <th className="px-6 py-3 border-b">
-                  {t("تاريخ بدايه الاشتراك")}
-                </th>
-                <th className="px-6 py-3 border-b">
-                  {t("تاريخ انتهاء الاشتراك")}
-                </th>
-                <th className="px-6 py-3 border-b">{t("العمليات")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMembers.map((member) => (
-                <tr
-                  key={member.id}
-                  className={
-                    isSubscriptionExpired(member.endDate) ? "bg-red-50" : ""
-                  }
-                >
-                  <td className="px-6 py-4 border-b">{member.name}</td>
-                  <td className="px-6 py-4 border-b">{member.type}</td>
-                  <td className="px-6 py-4 border-b">{member.phone}</td>
-                  <td className="px-6 py-4 border-b">{t(member.weight)}</td>
-                  <td className="px-6 py-4 border-b">
-                    <span
-                      className={`px-2 py-1 rounded text-sm ${
-                        member.status === t("Active")
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {t(member.status)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 border-b">
-                    {new Date(member.startDate).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 border-b">
-                    {new Date(member.endDate).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 border-b">
-                    <div className="flex space-x-2">
-                      {/* <Link
-                        to={`/members/${member.id}`}
-                        className="text-blue-500 hover:text-blue-700"
-                      >
-                        {t("View")}
-                      </Link> */}
-                      <Link
-                        to={`/members/edit/${member.id}`}
-                        className="text-yellow-500 hover:text-yellow-700"
-                      >
-                        {t("Edit")}
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(member.id)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        {t("Delete")}
-                      </button>
-
-                      <a
-                        href={createWhatsAppLink(
-                          member.phone,
-                          member.name,
-                          member.endDate,
-                          member
-                        )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-green-500 hover:text-green-700"
-                      >
-                        WhatsApp
-                      </a>
-                    </div>
-                  </td>
+        <div className="hidden xxl:block overflow-x-auto">
+          <div className="min-w-full">
+            <table className="min-w-full bg-white">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 border-b">{t("الاسم")}</th>
+                  <th className="px-6 py-3 border-b">{t("نوع الاشتراك")}</th>
+                  <th className="px-6 py-3 border-b">{t("رقم الهاتف")}</th>
+                  <th className="px-6 py-3 border-b">{t("الوزن")}</th>
+                  <th className="px-6 py-3 border-b">{t("الحالة")}</th>
+                  <th className="px-6 py-3 border-b">
+                    {t("تاريخ بدايه الاشتراك")}
+                  </th>
+                  <th className="px-6 py-3 border-b">
+                    {t("تاريخ انتهاء الاشتراك")}
+                  </th>
+                  <th className="px-6 py-3 border-b">{t("العمليات")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredMembers.map((member) => (
+                  <tr
+                    key={member.id}
+                    className={
+                      isSubscriptionExpired(member.endDate) ? "bg-red-50" : ""
+                    }
+                  >
+                    <td className="px-6 py-4 border-b">{member.name}</td>
+                    <td className="px-6 py-4 border-b">{member.type}</td>
+                    <td className="px-6 py-4 border-b">{member.phone}</td>
+                    <td className="px-6 py-4 border-b">{t(member.weight)}</td>
+                    <td className="px-6 py-4 border-b">
+                      <span
+                        className={`px-2 py-1 rounded text-sm ${
+                          member.status === t("Active")
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {t(member.status)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 border-b">
+                      {new Date(member.startDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 border-b">
+                      {new Date(member.endDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 border-b">
+                      <div className="flex space-x-2">
+                        {/* <Link
+                          to={`/members/${member.id}`}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          {t("View")}
+                        </Link> */}
+                        <Link
+                          to={`/members/edit/${member.id}`}
+                          className="text-yellow-500 hover:text-yellow-700"
+                        >
+                          {t("Edit")}
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(member.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          {t("Delete")}
+                        </button>
+
+                        <a
+                          href={createWhatsAppLink(
+                            member.phone,
+                            member.name,
+                            member.endDate,
+                            member
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-green-500 hover:text-green-700"
+                        >
+                          WhatsApp
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
