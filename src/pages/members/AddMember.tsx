@@ -6,6 +6,14 @@ import Input from "../../components/form/input/InputField";
 import Label from "../../components/form/Label";
 import { memberService, Member } from "../../services/memberService";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
+import { registerLocale } from "react-datepicker";
+import { ar } from "date-fns/locale";
+
+// Register Arabic locale
+registerLocale("ar", ar);
 
 const AddMember = () => {
   const navigate = useNavigate();
@@ -68,6 +76,36 @@ const AddMember = () => {
       [name]: name === "subscriptionPrice" ? Number(value) : value,
     }));
   };
+
+  const handleDateChange = (date: Date | null, name: string) => {
+    if (date) {
+      const formattedDate = format(date, "yyyy-MM-dd");
+      setMember((prev) => ({
+        ...prev,
+        [name]: formattedDate,
+      }));
+    }
+  };
+
+  const CalendarIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+  );
 
   return (
     <>
@@ -133,7 +171,6 @@ const AddMember = () => {
             <div className="mb-4">
               <Label className="block mb-2">سعر الاشتراك (شهري)</Label>
               <Input
-                type="number"
                 name="subscriptionPrice"
                 value={member.subscriptionPrice}
                 onChange={handleChange}
@@ -147,26 +184,54 @@ const AddMember = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="mb-4">
                 <Label className="block mb-2">تاريخ بدء الاشتراك</Label>
-                <Input
-                  type="date"
-                  name="startDate"
-                  value={member.startDate}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-base"
-                  required
-                />
+                <div className="relative">
+                  <DatePicker
+                    selected={
+                      member.startDate ? new Date(member.startDate) : null
+                    }
+                    onChange={(date) => handleDateChange(date, "startDate")}
+                    dateFormat="yyyy-MM-dd"
+                    locale="ar"
+                    showPopperArrow={false}
+                    customInput={
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={member.startDate}
+                          readOnly
+                          className="w-full px-3 py-2 border rounded text-base pr-10"
+                          placeholder="اختر التاريخ"
+                        />
+                        <CalendarIcon />
+                      </div>
+                    }
+                  />
+                </div>
               </div>
 
               <div className="mb-4">
                 <Label className="block mb-2">تاريخ انتهاء الاشتراك</Label>
-                <Input
-                  type="date"
-                  name="endDate"
-                  value={member.endDate}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded text-base"
-                  required
-                />
+                <div className="relative">
+                  <DatePicker
+                    selected={member.endDate ? new Date(member.endDate) : null}
+                    onChange={(date) => handleDateChange(date, "endDate")}
+                    dateFormat="yyyy-MM-dd"
+                    locale="ar"
+                    showPopperArrow={false}
+                    customInput={
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={member.endDate}
+                          readOnly
+                          className="w-full px-3 py-2 border rounded text-base pr-10"
+                          placeholder="اختر التاريخ"
+                        />
+                        <CalendarIcon />
+                      </div>
+                    }
+                  />
+                </div>
               </div>
             </div>
 
@@ -183,7 +248,7 @@ const AddMember = () => {
               </select>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 bg-gray-100">
               <button
                 type="submit"
                 className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"

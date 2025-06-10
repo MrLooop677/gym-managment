@@ -159,7 +159,7 @@ const MembersList = () => {
                   </span>{" "}
                   {new Date(member.endDate).toLocaleDateString()}
                 </p>
-                <div className="flex space-x-2 mt-4">
+                <div className="flex space-x-2 mt-4 bg-gray-100">
                   {/* <Link
                     to={`/members/${member.id}`}
                     className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"

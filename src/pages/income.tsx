@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface IncomeEntry {
+  id: string;
   amount: number;
   date: string;
   type: "daily" | "subscription";
@@ -103,6 +104,7 @@ export default function Income() {
     }
 
     const newEntry: IncomeEntry = {
+      id: Date.now().toString(),
       amount: dailyAmount,
       date: currentDay,
       type: "daily",
@@ -142,7 +144,7 @@ export default function Income() {
         notes: incomeData.notes,
       };
 
-      await axios.put(
+      await axios.patch(
         "https://plume-numerous-homburg.glitch.me/income",
         updatedIncomeData
       );
@@ -210,11 +212,11 @@ export default function Income() {
     setRefreshTrigger((prev) => prev + 1);
   };
 
-  const handleDeleteEntry = async (date: string, amount: number) => {
+  const handleDeleteEntry = async (entryId: string) => {
     try {
-      // Filter out the entry to be deleted
+      // Filter out the entry to be deleted using the unique ID
       const updatedEntries = incomeData.dailyEntries.filter(
-        (entry) => !(entry.date === date && entry.amount === amount)
+        (entry) => entry.id !== entryId
       );
 
       // Recalculate incomes after deletion
@@ -266,7 +268,7 @@ export default function Income() {
     try {
       // Create a new array without the deleted note
       const updatedNotes = incomeData.notes.filter((_, i) => i !== index);
-      
+
       const updatedIncomeData = {
         ...incomeData,
         notes: updatedNotes,
@@ -308,18 +310,17 @@ export default function Income() {
         تحديث البيانات
       </button>
       <div style={{ margin: "20px 0" }}>
-        <h2>إجمالي الدخل لهذا اليوم: ${incomeData.dailyIncome.toFixed(2)}</h2>
-        <h2>إجمالي الدخل (هذا العام): ${incomeData.totalIncome.toFixed(2)}</h2>
+        <h2>إجمالي الدخل لهذا اليوم: ج.م{incomeData.dailyIncome.toFixed(2)}</h2>
+
         <h2>
-          الدخل الشهري (يونيو 2025): ${incomeData.monthlyIncome.toFixed(2)}
+          الدخل الشهري (يونيو 2025): ج.م{incomeData.monthlyIncome.toFixed(2)}
         </h2>
-        <h2>الدخل السنوي (2025): ${incomeData.yearlyIncome.toFixed(2)}</h2>
+        <h2>الدخل السنوي (2025): ج.م{incomeData.yearlyIncome.toFixed(2)}</h2>
       </div>
 
       <div style={{ margin: "20px 0" }}>
         <h3>إضافة دخل يومي</h3>
         <input
-          type="number"
           value={dailyAmount}
           onChange={(e) => setDailyAmount(Number(e.target.value))}
           placeholder="أدخل مبلغ الدخل اليومي"
@@ -394,12 +395,12 @@ export default function Income() {
                 entryDate.getFullYear() === currentYear
               );
             })
-            .map((entry, index) => (
-              <li key={index}>
-                ${entry.amount.toFixed(2)} - {entry.date} (
+            .map((entry) => (
+              <li key={entry.id}>
+                ج.م{entry.amount.toFixed(2)} - {entry.date} (
                 {entry.type === "daily" ? "يومي" : "اشتراك"})
                 <span
-                  onClick={() => handleDeleteEntry(entry.date, entry.amount)}
+                  onClick={() => handleDeleteEntry(entry.id)}
                   style={{
                     cursor: "pointer",
                     marginLeft: "10px",
