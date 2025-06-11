@@ -251,7 +251,7 @@ const AddMember = () => {
             <div className="mt-6 bg-gray-100">
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"
+                className="w-full sm:w-auto bg-red-500 text-white px-6 py-2 rounded  transition-colors"
               >
                 اضافه عضو جديد
               </button>

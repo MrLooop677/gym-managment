@@ -48,14 +48,25 @@ export default function Income() {
           "https://plume-numerous-homburg.glitch.me/income"
         );
         const income = incomeResponse.data;
+        console.log("Fetched income data:", income);
+
+        // Ensure all entries have an ID
+        const entriesWithIds = (income.dailyEntries || []).map(
+          (entry: IncomeEntry) => ({
+            ...entry,
+            id:
+              entry.id ||
+              Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          })
+        );
 
         // Calculate daily income (today only)
-        const dailyIncome = (income.dailyEntries || [])
+        const dailyIncome = entriesWithIds
           .filter((entry: IncomeEntry) => entry.date === currentDay)
           .reduce((acc: number, entry: IncomeEntry) => acc + entry.amount, 0);
 
         // Calculate monthly income (all entries for current month)
-        const monthlyIncome = (income.dailyEntries || [])
+        const monthlyIncome = entriesWithIds
           .filter((entry: IncomeEntry) => {
             const entryDate = new Date(entry.date);
             return (
@@ -66,7 +77,7 @@ export default function Income() {
           .reduce((acc: number, entry: IncomeEntry) => acc + entry.amount, 0);
 
         // Calculate yearly income (all entries for current year)
-        const yearlyIncome = (income.dailyEntries || [])
+        const yearlyIncome = entriesWithIds
           .filter((entry: IncomeEntry) => {
             const entryDate = new Date(entry.date);
             return entryDate.getFullYear() === currentYear;
@@ -74,7 +85,7 @@ export default function Income() {
           .reduce((acc: number, entry: IncomeEntry) => acc + entry.amount, 0);
 
         const updatedIncomeData = {
-          dailyEntries: income.dailyEntries || [],
+          dailyEntries: entriesWithIds,
           totalIncome: yearlyIncome,
           monthlyIncome: monthlyIncome,
           yearlyIncome: yearlyIncome,
@@ -82,9 +93,10 @@ export default function Income() {
           notes: income.notes || [],
         };
 
+        console.log("Processed income data:", updatedIncomeData);
         setIncomeData(updatedIncomeData);
 
-        // Update server with calculated totals
+        // Update server with calculated totals and entries with IDs
         await axios.put(
           "https://plume-numerous-homburg.glitch.me/income",
           updatedIncomeData
@@ -104,7 +116,7 @@ export default function Income() {
     }
 
     const newEntry: IncomeEntry = {
-      id: Date.now().toString(),
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9), // More unique ID
       amount: dailyAmount,
       date: currentDay,
       type: "daily",
@@ -214,10 +226,15 @@ export default function Income() {
 
   const handleDeleteEntry = async (entryId: string) => {
     try {
+      console.log("Deleting entry with ID:", entryId);
+      console.log("Current entries:", incomeData.dailyEntries);
+
       // Filter out the entry to be deleted using the unique ID
       const updatedEntries = incomeData.dailyEntries.filter(
         (entry) => entry.id !== entryId
       );
+
+      console.log("Entries after deletion:", updatedEntries);
 
       // Recalculate incomes after deletion
       const dailyIncome = updatedEntries
@@ -249,6 +266,8 @@ export default function Income() {
         yearlyIncome: yearlyIncome,
         dailyIncome: dailyIncome,
       };
+
+      console.log("Sending updated data to server:", updatedIncomeData);
 
       // Send the updated data to the server
       await axios.put(
@@ -399,16 +418,19 @@ export default function Income() {
               <li key={entry.id}>
                 ج.م{entry.amount.toFixed(2)} - {entry.date} (
                 {entry.type === "daily" ? "يومي" : "اشتراك"})
-                <span
+                <button
                   onClick={() => handleDeleteEntry(entry.id)}
                   style={{
                     cursor: "pointer",
                     marginLeft: "10px",
                     color: "red",
+                    background: "none",
+                    border: "none",
+                    padding: "0",
                   }}
                 >
                   🗑️
-                </span>
+                </button>
               </li>
             ))}
         </ul>

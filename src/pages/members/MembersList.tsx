@@ -168,13 +168,13 @@ const MembersList = () => {
                   </Link> */}
                   <Link
                     to={`/members/edit/${member.id}`}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600"
+                    className="bg-yellow-700 text-white px-3 py-1 rounded text-sm "
                   >
                     {t("تعديل")}
                   </Link>
                   <button
                     onClick={() => handleDelete(member.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+                    className="bg-red-900 text-white px-3 py-1 rounded text-sm"
                   >
                     {t("حذف")}
                   </button>
@@ -188,7 +188,7 @@ const MembersList = () => {
                     )}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
                   >
                     واتس اب
                   </a>
