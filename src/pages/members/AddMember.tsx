@@ -41,24 +41,42 @@ const AddMember = () => {
 
       // Add subscription income entry
       if (newMember.subscriptionPrice > 0) {
-        const incomeResponse = await axios.get(
-          "https://plume-numerous-homburg.glitch.me/income"
+        await axios.post(
+          `https://687a60b8abb83744b7ec9790.mockapi.io/api/gym/income`,
+          {
+            amount: Number(newMember.subscriptionPrice),
+            date: new Date().toISOString().split("T")[0],
+            type: "subscription",
+            id: newMember.id,
+            note: "",
+            dailyIncome: 0,
+            yearlyIncome: 0,
+            monthlyIncome: 0,
+          }
         );
-        const incomeData = incomeResponse.data;
 
-        const newEntry = {
-          amount: Number(newMember.subscriptionPrice),
-          date: new Date().toISOString().split("T")[0],
-          type: "subscription",
-          memberId: newMember.id,
+        // Fetch the current total
+        const totalRes = await axios.get(
+          "https://687a60b8abb83744b7ec9790.mockapi.io/api/gym/income/total-id"
+        );
+        const total = totalRes.data;
+
+        // Calculate new totals, including dailyIncome
+        const updatedTotal = {
+          ...total,
+          dailyIncome:
+            (total.dailyIncome || 0) + Number(newMember.subscriptionPrice),
+          monthlyIncome:
+            (total.monthlyIncome || 0) + Number(newMember.subscriptionPrice),
+          yearlyIncome:
+            (total.yearlyIncome || 0) + Number(newMember.subscriptionPrice),
         };
 
-        const updatedEntries = [...(incomeData.dailyEntries || []), newEntry];
-
-        await axios.put("https://plume-numerous-homburg.glitch.me/income", {
-          ...incomeData,
-          dailyEntries: updatedEntries,
-        });
+        // Update the total on the server
+        await axios.put(
+          "https://687a60b8abb83744b7ec9790.mockapi.io/api/gym/income/total-id",
+          updatedTotal
+        );
       }
 
       navigate("/members"); // Navigate to Income page to trigger refresh
@@ -235,7 +253,7 @@ const AddMember = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <Label className="block mb-2">حالة الاشتراك</Label>
               <select
                 name="status"
@@ -246,7 +264,7 @@ const AddMember = () => {
                 <option value="Active">نشط</option>
                 <option value="Inactive">غير نشط</option>
               </select>
-            </div>
+            </div> */}
 
             <div className="mt-6 bg-gray-100">
               <button
