@@ -118,15 +118,27 @@ const IncomeManager = () => {
   const resetDailyIfNeeded = async () => {
     setLoading(true);
     const today = dayjs().format("YYYY-MM-DD");
-    const lastEntryDate = dailyEntries[0]?.data;
+    // Find the latest date among daily/subscription entries
+    const relevantEntries = dailyEntries.filter(
+      (entry) => entry.type === "daily" || entry.type === "subscription"
+    );
+    const lastEntryDate = relevantEntries[0]?.data;
     if (lastEntryDate && lastEntryDate !== today) {
-      for (const entry of dailyEntries) {
+      // Delete all daily and subscription entries
+      for (const entry of relevantEntries) {
         await axios.delete(`${baseUrl}/${entry.id}`);
       }
-      const updatedTotal = { ...totalObject, dailyIncome: 0 };
-      await axios.put(`${baseUrl}/${totalObject.id}`, updatedTotal);
-      setTotalObject(updatedTotal);
-      setDailyEntries([]);
+      // Reset daily income in totalObject
+      if (totalObject) {
+        const updatedTotal = { ...totalObject, dailyIncome: 0 };
+        await axios.put(`${baseUrl}/${totalObject.id}`, updatedTotal);
+        setTotalObject(updatedTotal);
+      }
+      // Remove deleted entries from local state
+      const remainingEntries = dailyEntries.filter(
+        (entry) => entry.type !== "daily" && entry.type !== "subscription"
+      );
+      setDailyEntries(remainingEntries);
     }
     setLoading(false);
   };
