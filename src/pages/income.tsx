@@ -115,6 +115,44 @@ const IncomeManager = () => {
     }
   };
 
+  const handleDeleteTodayEntries = async () => {
+    setLoading(true);
+    try {
+      const today = dayjs().format("YYYY-MM-DD");
+      // Find all daily/subscription entries for today
+      const todayEntries = dailyEntries.filter(
+        (entry) =>
+          (entry.type === "daily" || entry.type === "subscription") &&
+          (entry.data === today || entry.date === today)
+      );
+      // Delete each entry from backend
+      for (const entry of todayEntries) {
+        await axios.delete(`${baseUrl}/${entry.id}`);
+      }
+      // Remove from local state
+      const remainingEntries = dailyEntries.filter(
+        (entry) =>
+          !(
+            (entry.type === "daily" || entry.type === "subscription") &&
+            (entry.data === today || entry.date === today)
+          )
+      );
+      setDailyEntries(remainingEntries);
+
+      // Reset daily income in totalObject
+      if (totalObject) {
+        const updatedTotal = { ...totalObject, dailyIncome: 0 };
+        await axios.put(`${baseUrl}/${totalObject.id}`, updatedTotal);
+        setTotalObject(updatedTotal);
+      }
+    } catch (error) {
+      alert("فشل في حذف إدخالات اليوم. راجع وحدة التحكم للمزيد من التفاصيل.");
+      console.error("فشل في حذف إدخالات اليوم:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const resetDailyIfNeeded = async () => {
     setLoading(true);
     const today = dayjs().format("YYYY-MM-DD");
@@ -214,6 +252,16 @@ const IncomeManager = () => {
           </span>{" "}
           الإدخالات اليومية
         </h3>
+        <button
+          onClick={handleDeleteTodayEntries}
+          className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded transition-colors text-lg flex items-center gap-2 shadow mb-4"
+          disabled={loading}
+        >
+          <span role="img" aria-label="delete">
+            🗑️
+          </span>
+          حذف إدخالات اليوم
+        </button>
         <ul className="mb-8 space-y-2">
           {dailyEntries.map((entry) => (
             <li
