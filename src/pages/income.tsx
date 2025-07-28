@@ -2,11 +2,34 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 
+type IncomeEntry = {
+  id: string;
+  note: string;
+  amount: number;
+  data?: string; // for daily
+  date?: string; // for subscription
+  type: "daily" | "subscription" | "total";
+  dailyIncome?: number;
+  monthlyIncome?: number;
+  yearlyIncome?: number;
+};
+
+type TotalObject = {
+  id: string;
+  note: string;
+  amount: number;
+  data: string;
+  type: "total";
+  dailyIncome: number;
+  monthlyIncome: number;
+  yearlyIncome: number;
+};
+
 const IncomeManager = () => {
-  const [dailyEntries, setDailyEntries] = useState([]);
+  const [dailyEntries, setDailyEntries] = useState<IncomeEntry[]>([]);
   const [note, setNote] = useState("");
   const [amount, setAmount] = useState("");
-  const [totalObject, setTotalObject] = useState(null);
+  const [totalObject, setTotalObject] = useState<TotalObject | null>(null);
   const [loading, setLoading] = useState(false);
   const baseUrl = "https://687a60b8abb83744b7ec9790.mockapi.io/api/gym/income";
 
@@ -78,7 +101,7 @@ const IncomeManager = () => {
     }
   };
 
-  const handleDeleteEntry = async (entryId, entryAmount) => {
+  const handleDeleteEntry = async (entryId: string, entryAmount: number) => {
     setLoading(true);
     try {
       // Delete from backend
@@ -121,9 +144,8 @@ const IncomeManager = () => {
       const today = dayjs().format("YYYY-MM-DD");
       // Find all daily/subscription entries for today
       const todayEntries = dailyEntries.filter(
-        (entry) =>
-          (entry.type === "daily" || entry.type === "subscription") &&
-          (entry.data === today || entry.date === today)
+        (entry) => entry.type === "daily" || entry.type === "subscription"
+        // (entry.data === today || entry.date === today)
       );
       // Delete each entry from backend
       for (const entry of todayEntries) {
@@ -133,8 +155,8 @@ const IncomeManager = () => {
       const remainingEntries = dailyEntries.filter(
         (entry) =>
           !(
-            (entry.type === "daily" || entry.type === "subscription") &&
-            (entry.data === today || entry.date === today)
+            (entry.type === "daily" || entry.type === "subscription")
+            // (entry.data === today || entry.date === today)
           )
       );
       setDailyEntries(remainingEntries);
@@ -182,17 +204,43 @@ const IncomeManager = () => {
   };
 
   const resetMonthlyIfNeeded = async () => {
+    if (!totalObject) return;
     setLoading(true);
     const currentMonth = dayjs().format("MM");
-    const entriesThisMonth = dailyEntries.filter(
-      (entry) => dayjs(entry.data).format("MM") === currentMonth
-    );
-    if (entriesThisMonth.length === 0 && totalObject.monthlyIncome !== 0) {
-      const updatedTotal = { ...totalObject, monthlyIncome: 0, dailyIncome: 0 };
+    const lastResetMonth = dayjs(totalObject.data).format("MM");
+    if (lastResetMonth !== currentMonth) {
+      // Only reset monthlyIncome, not yearlyIncome or dailyIncome
+      const updatedTotal = {
+        ...totalObject,
+        monthlyIncome: 0,
+        data: dayjs().format("YYYY-MM-DD"),
+      };
       await axios.put(`${baseUrl}/${totalObject.id}`, updatedTotal);
       setTotalObject(updatedTotal);
     }
     setLoading(false);
+  };
+
+  // Handler to manually reset monthly income
+  const handleResetMonthlyIncome = async () => {
+    if (!totalObject) return;
+    setLoading(true);
+    try {
+      const updatedTotal = {
+        ...totalObject,
+        monthlyIncome: 0,
+        data: dayjs().format("YYYY-MM-DD"),
+      };
+      await axios.put(`${baseUrl}/${totalObject.id}`, updatedTotal);
+      setTotalObject(updatedTotal);
+    } catch (error) {
+      alert(
+        "فشل في إعادة تعيين الدخل الشهري. راجع وحدة التحكم للمزيد من التفاصيل."
+      );
+      console.error("فشل في إعادة تعيين الدخل الشهري:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -261,6 +309,17 @@ const IncomeManager = () => {
             🗑️
           </span>
           حذف إدخالات اليوم
+        </button>
+        {/* Button to reset monthly income */}
+        <button
+          onClick={handleResetMonthlyIncome}
+          className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded transition-colors text-lg flex items-center gap-2 shadow mb-4 ml-2"
+          disabled={loading}
+        >
+          <span role="img" aria-label="reset-monthly">
+            🔄
+          </span>
+          إعادة تعيين الدخل الشهري
         </button>
         <ul className="mb-8 space-y-2">
           {dailyEntries.map((entry) => (

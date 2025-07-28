@@ -90,14 +90,38 @@ const MembersList = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Search Bar */}
-        <div className="mb-4 flex justify-end m-2">
-          <input
-            type="text"
-            placeholder={t("البحث بواسطه الاسم")}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full max-w-xs border px-3 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ color: "green" }}>عدد الأعضاء : {members?.length}</p>
+          <div className="mb-4 flex justify-end m-2">
+            <input
+              type="text"
+              placeholder={t("البحث بواسطه الاسم")}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full max-w-xs border px-3 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+        {/* Member count limit hint */}
+        <div
+          style={{
+            margin: "8px 0",
+            color: "#b45309",
+            background: "#fef3c7",
+            padding: "8px",
+            borderRadius: "4px",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            textAlign: "right",
+          }}
+        >
+          يجب لا يكون عدد الاعضاء اكبر من 100 عضو
         </div>
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <h1 className="text-2xl font-bold mb-4 sm:mb-0">
