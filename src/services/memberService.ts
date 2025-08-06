@@ -5,12 +5,13 @@ const API_URL = "https://687a60b8abb83744b7ec9790.mockapi.io/api/gym/members";
 export interface Member {
   id?: number;
   name: string;
-  email: string;
-  role: string;
+  type: string;
+  weight: string;
   status: string;
   startDate: string;
   endDate: string;
   phone: string;
+  subscriptionPrice?: number;
 }
 
 export const memberService = {

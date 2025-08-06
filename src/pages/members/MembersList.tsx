@@ -64,14 +64,14 @@ const MembersList = () => {
     const cleanPhone = phone.replace(/\D/g, "");
     // craft your message
     const message = shouldShowWhatsApp(member)
-      ? `السلام عليكم ${memberName} لقد تم انتهاء اشتراكك في Heros Gym بتاريخ ${new Date(
+      ? `السلام عليكم ${memberName} لقد تم انتهاء اشتراكك في Heroes  Gym بتاريخ ${new Date(
           endDate
         ).toLocaleDateString()}.`
-      : `السلام عليكم ${memberName} لقد تم بدا اشتراكك في Heros Gym بتاريخ ${new Date(
+      : `السلام عليكم ${memberName} لقد تم بدا اشتراكك في Heroes  Gym بتاريخ ${new Date(
           member.startDate
         ).toLocaleDateString()} إلى ${new Date(
           member.endDate
-        ).toLocaleDateString()}. شكرا لاختياركم HEROS GYM (جيم الأبطال)`;
+        ).toLocaleDateString()}. شكرا لاختياركم Heroes  GYM (جيم الأبطال)`;
     // encode it for a URL
     const encodedMessage = encodeURIComponent(message);
     // return the full wa.me link

@@ -17,9 +17,7 @@ registerLocale("ar", ar);
 
 const AddMember = () => {
   const navigate = useNavigate();
-  const [member, setMember] = useState<
-    Omit<Member, "id"> & { subscriptionPrice: number }
-  >({
+  const [member, setMember] = useState<Omit<Member, "id">>({
     name: "",
     type: "",
     weight: "",
@@ -30,8 +28,50 @@ const AddMember = () => {
     subscriptionPrice: 0,
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!member.name.trim()) {
+      newErrors.name = "الاسم مطلوب";
+    }
+
+    if (!member.type.trim()) {
+      newErrors.type = "نوع الاشتراك مطلوب";
+    }
+
+    if (!member.phone.trim()) {
+      newErrors.phone = "رقم الهاتف مطلوب";
+    }
+
+    if (!member.weight.trim()) {
+      newErrors.weight = "الوزن مطلوب";
+    }
+
+    if (!member.subscriptionPrice || member.subscriptionPrice <= 0) {
+      newErrors.subscriptionPrice = "سعر الاشتراك يجب أن يكون أكبر من صفر";
+    }
+
+    if (!member.startDate) {
+      newErrors.startDate = "تاريخ بدء الاشتراك مطلوب";
+    }
+
+    if (!member.endDate) {
+      newErrors.endDate = "تاريخ انتهاء الاشتراك مطلوب";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       // Create the member
       const newMember = await memberService.create({
@@ -40,7 +80,7 @@ const AddMember = () => {
       });
 
       // Add subscription income entry
-      if (newMember.subscriptionPrice > 0) {
+      if (newMember.subscriptionPrice && newMember.subscriptionPrice > 0) {
         await axios.post(
           `https://687a60b8abb83744b7ec9790.mockapi.io/api/gym/income`,
           {
@@ -93,6 +133,11 @@ const AddMember = () => {
       ...prev,
       [name]: name === "subscriptionPrice" ? Number(value) : value,
     }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleDateChange = (date: Date | null, name: string) => {
@@ -102,6 +147,11 @@ const AddMember = () => {
         ...prev,
         [name]: formattedDate,
       }));
+
+      // Clear error when user selects a date
+      if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+      }
     }
   };
 
@@ -144,9 +194,13 @@ const AddMember = () => {
                 name="name"
                 value={member.name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded text-base"
-                required
+                className={`w-full px-3 py-2 border rounded text-base ${
+                  errors.name ? "border-red-500" : ""
+                }`}
               />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+              )}
             </div>
 
             <div className="mb-4">
@@ -156,9 +210,13 @@ const AddMember = () => {
                 name="type"
                 value={member.type}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded text-base"
-                required
+                className={`w-full px-3 py-2 border rounded text-base ${
+                  errors.type ? "border-red-500" : ""
+                }`}
               />
+              {errors.type && (
+                <p className="text-red-500 text-sm mt-1">{errors.type}</p>
+              )}
             </div>
 
             <div className="mb-4">
@@ -168,10 +226,14 @@ const AddMember = () => {
                 name="phone"
                 value={member.phone}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded text-base"
-                required
+                className={`w-full px-3 py-2 border rounded text-base ${
+                  errors.phone ? "border-red-500" : ""
+                }`}
                 placeholder="02xxxxxxxx"
               />
+              {errors.phone && (
+                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+              )}
             </div>
 
             <div className="mb-4">
@@ -181,22 +243,33 @@ const AddMember = () => {
                 name="weight"
                 value={member.weight}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded text-base"
-                required
+                className={`w-full px-3 py-2 border rounded text-base ${
+                  errors.weight ? "border-red-500" : ""
+                }`}
               />
+              {errors.weight && (
+                <p className="text-red-500 text-sm mt-1">{errors.weight}</p>
+              )}
             </div>
 
             <div className="mb-4">
               <Label className="block mb-2">سعر الاشتراك (شهري)</Label>
               <Input
+                type="number"
                 name="subscriptionPrice"
                 value={member.subscriptionPrice}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded text-base"
-                required
+                className={`w-full px-3 py-2 border rounded text-base ${
+                  errors.subscriptionPrice ? "border-red-500" : ""
+                }`}
                 placeholder="ادخل سعر الاشتراك الشهري"
                 min="0"
               />
+              {errors.subscriptionPrice && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.subscriptionPrice}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -217,13 +290,20 @@ const AddMember = () => {
                           type="text"
                           value={member.startDate}
                           readOnly
-                          className="w-full px-3 py-2 border rounded text-base pr-10"
+                          className={`w-full px-3 py-2 border rounded text-base pr-10 ${
+                            errors.startDate ? "border-red-500" : ""
+                          }`}
                           placeholder="اختر التاريخ"
                         />
                         <CalendarIcon />
                       </div>
                     }
                   />
+                  {errors.startDate && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.startDate}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -242,29 +322,23 @@ const AddMember = () => {
                           type="text"
                           value={member.endDate}
                           readOnly
-                          className="w-full px-3 py-2 border rounded text-base pr-10"
+                          className={`w-full px-3 py-2 border rounded text-base pr-10 ${
+                            errors.endDate ? "border-red-500" : ""
+                          }`}
                           placeholder="اختر التاريخ"
                         />
                         <CalendarIcon />
                       </div>
                     }
                   />
+                  {errors.endDate && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.endDate}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
-
-            {/* <div className="mb-4">
-              <Label className="block mb-2">حالة الاشتراك</Label>
-              <select
-                name="status"
-                value={member.status}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded text-base"
-              >
-                <option value="Active">نشط</option>
-                <option value="Inactive">غير نشط</option>
-              </select>
-            </div> */}
 
             <div className="mt-6 bg-gray-100">
               <button
