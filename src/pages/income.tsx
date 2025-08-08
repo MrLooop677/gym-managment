@@ -244,7 +244,7 @@ const IncomeManager = () => {
   };
 
   useEffect(() => {
-    resetDailyIfNeeded();
+    // resetDailyIfNeeded();
     resetMonthlyIfNeeded();
   }, [dailyEntries]);
 
@@ -300,7 +300,7 @@ const IncomeManager = () => {
           </span>{" "}
           الإدخالات اليومية
         </h3>
-        {/* <button
+        <button
           onClick={handleDeleteTodayEntries}
           className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded transition-colors text-lg flex items-center gap-2 shadow mb-4"
           disabled={loading}
@@ -309,7 +309,7 @@ const IncomeManager = () => {
             🗑️
           </span>
           حذف إدخالات اليوم
-        </button> */}
+        </button>
         {/* Button to reset monthly income */}
         {/* <button
           onClick={handleResetMonthlyIncome}
@@ -334,14 +334,14 @@ const IncomeManager = () => {
                   <span className="ml-2 text-blue-500">- اشتراك</span>
                 )}
               </span>
-              <button
+              {/* <button
                 onClick={() => handleDeleteEntry(entry.id, entry.amount)}
                 className="text-red-600 hover:text-red-800 transition-colors ml-4"
                 title="حذف"
                 disabled={loading}
               >
                 🗑️
-              </button>
+              </button> */}
             </li>
           ))}
         </ul>
