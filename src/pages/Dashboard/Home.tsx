@@ -40,7 +40,7 @@ export default function Dashboard() {
     if (!phone) return "#";
     const cleanPhone = phone.replace(/\D/g, "");
     const message = shouldShowWhatsApp(member)
-      ? `السلام عليكم  ${memberName}  عميلنا العزيز تم انتهاء اشتراكك ف يوم     ${new Date(
+      ? `السلام عليكم  ${memberName}  عميلنا العزيز نذكرك بموعد تجديد الاشتراك الشهري بتاريخ    ${new Date(
           endDate
         ).toLocaleDateString()}.    `
       : "السلام عليكم معك فريق اداره hero gym ";
